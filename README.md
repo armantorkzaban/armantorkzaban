@@ -79,6 +79,14 @@ Plus 543 contributions to private repositories.
 #### When I commit
 
 <!-- habits:start -->
+```text
+hour  00  04  08  12  16  20
+      ███▅▄▂▅▂▂▂▃▃▂▂▃▃▃▂▅▃▅▄▆▆   peak 02:00
+
+day   M T W T F S S
+      █ █ ▆ ▇ ▅ ▄ ▇   peak Tue
+```
+<sub>483 public commits over the last 365 days, by author time in Europe/Berlin.</sub>
 <!-- habits:end -->
 
 #### By the numbers
