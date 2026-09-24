@@ -4,11 +4,28 @@ Platform engineer in Göttingen. Kubernetes, the Linux underneath it, and the pi
 both honest. I build infrastructure for civic tech that has to keep working when someone is
 actively trying to switch it off.
 
+<!-- cluster:start -->
 ```console
 $ kubectl get engineer arman -o wide
 NAME    ROLE                LOCATION    FOCUS
 arman   platform-engineer   göttingen   k8s scheduling · gitops · observability · civic-tech infra
+
+$ kubectl get nodes
+NAME                    STATUS   ROLES           AGE   VERSION
+profile-control-plane   Ready    control-plane   31s   v1.33.1
+profile-worker          Ready    <none>          17s   v1.33.1
+profile-worker2         Ready    <none>          17s   v1.33.1
+profile-worker3         Ready    <none>          17s   v1.33.1
+
+$ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName
+POD                       STATUS    NODE
+spread-7776697d4d-29x6f   Running   profile-worker2
+spread-7776697d4d-2t8d5   Running   profile-worker
+spread-7776697d4d-7lpkp   Running   profile-worker3
+spread-7776697d4d-rvtjd   Running   profile-worker
 ```
+<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/workflows/cluster.yml">the Cluster workflow</a>.</sub>
+<!-- cluster:end -->
 
 **Research.** At the L3S Research Center I worked on two EU Horizon projects,
 [GLACIATION](https://github.com/glaciation-heu) and [CLEVER](https://www.cleverproject.eu/). I wrote custom Kubernetes scheduler
@@ -57,7 +74,12 @@ Prometheus, Grafana, OpenTelemetry · Linux internals and hardening · Go, Pytho
 Plus 543 contributions to private repositories.
 <!-- activity:end -->
 
-<sub>Generated daily by <a href="scripts/activity.py">scripts/activity.py</a> Private work is counted, never named.</sub>
+<sub>Generated daily by <a href="scripts/activity.py">scripts/activity.py</a>. Private work is counted, never named.</sub>
+
+#### When I commit
+
+<!-- habits:start -->
+<!-- habits:end -->
 
 #### By the numbers
 

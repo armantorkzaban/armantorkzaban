@@ -1,0 +1,29 @@
+name: Cluster
+on:
+  schedule: [{cron: "15 0 * * *"}]
+  workflow_dispatch:
+  push: {branches: [main], paths: [k8s/**, scripts/cluster.sh, scripts/splice.py, .github/workflows/cluster.yml]}
+
+concurrency: {group: readme-writers}
+
+jobs:
+  cluster:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: kind version && kubectl version --client
+      - run: scripts/cluster.sh > block.md
+      - name: Link the run that produced it
+        run: |
+          echo "<sub>Real output from a kind cluster, rebuilt daily by <a href=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\">this run</a>.</sub>" >> block.md
+      - run: python3 scripts/splice.py cluster README.md < block.md
+      - name: Commit if changed
+        run: |
+          git diff --quiet README.md && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Update cluster snapshot"
+          git pull --rebase
+          git push

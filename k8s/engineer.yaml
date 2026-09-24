@@ -1,0 +1,8 @@
+apiVersion: torkzaban.dev/v1
+kind: Engineer
+metadata:
+  name: arman
+spec:
+  role: platform-engineer
+  location: göttingen
+  focus: k8s scheduling · gitops · observability · civic-tech infra

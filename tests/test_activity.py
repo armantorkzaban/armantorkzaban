@@ -1,10 +1,14 @@
 import sys
 import unittest
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import activity  # noqa: E402
+
+START, END = "<!-- activity:start -->", "<!-- activity:end -->"
 
 
 def entry(name, count, private=False, fork=False, description=None, language="Go"):
@@ -71,20 +75,58 @@ class RenderTest(unittest.TestCase):
         self.assertIn("No activity", activity.render([], 0, 30))
 
 
+class HabitsTest(unittest.TestCase):
+    def test_utc_commit_lands_in_local_hour_and_day(self):
+        # 23:30 UTC on Sunday 2026-01-04 is 00:30 Monday in Berlin (UTC+1 in winter).
+        t = datetime(2026, 1, 4, 23, 30, tzinfo=timezone.utc)
+        hours, weekdays = activity.habits([t], ZoneInfo("Europe/Berlin"))
+        self.assertEqual(hours.index(1), 0)
+        self.assertEqual(weekdays.index(1), 0)
+
+    def test_summer_offset(self):
+        t = datetime(2026, 7, 1, 12, 0, tzinfo=timezone.utc)
+        hours, _ = activity.habits([t], ZoneInfo("Europe/Berlin"))
+        self.assertEqual(hours.index(1), 14)
+
+    def test_spark_max_is_tallest_zero_is_dot(self):
+        self.assertEqual(activity.spark([0, 1]), "·█")
+        self.assertEqual(activity.spark([0, 1, 8]), "·▁█")
+
+    def test_spark_all_zero(self):
+        self.assertEqual(activity.spark([0, 0, 0]), "···")
+
+    def test_hour_axis_and_spark_line_up(self):
+        hours = [0] * 24
+        hours[12] = 3
+        lines = activity.render_habits(hours, [0, 0, 3, 0, 0, 0, 0], 365, "Europe/Berlin").splitlines()
+        self.assertEqual(lines[1].index("12"), lines[2].index("█"))
+        self.assertIn("peak 12:00", lines[2])
+        self.assertIn("peak Wed", lines[5])
+
+    def test_no_commits(self):
+        self.assertIn("No public commits", activity.render_habits([0] * 24, [0] * 7, 365, "UTC"))
+
+
+class PublicReposTest(unittest.TestCase):
+    def test_private_names_never_queried(self):
+        c = collection(entry("hugad/hugad-ops", 5, private=True), entry("jomhoor/.github", 1, language=None))
+        self.assertEqual(activity.public_repos(c), ["jomhoor/.github"])
+
+
 class SpliceTest(unittest.TestCase):
     def test_replaces_only_between_markers(self):
-        readme = f"top\n{activity.START}\nold\n{activity.END}\nbottom\n"
-        out = activity.splice(readme, "new")
-        self.assertEqual(out, f"top\n{activity.START}\nnew\n{activity.END}\nbottom\n")
+        readme = f"top\n{START}\nold\n{END}\nbottom\n"
+        out = activity.splice(readme, "activity", "new")
+        self.assertEqual(out, f"top\n{START}\nnew\n{END}\nbottom\n")
 
     def test_idempotent(self):
-        readme = f"a\n{activity.START}\n{activity.END}\nb"
-        once = activity.splice(readme, "t")
-        self.assertEqual(activity.splice(once, "t"), once)
+        readme = f"a\n{START}\n{END}\nb"
+        once = activity.splice(readme, "activity", "t")
+        self.assertEqual(activity.splice(once, "activity", "t"), once)
 
     def test_missing_end_marker_raises(self):
         with self.assertRaises(ValueError):
-            activity.splice(f"a\n{activity.START}\nold\n", "new")
+            activity.splice(f"a\n{START}\nold\n", "activity", "new")
 
 
 if __name__ == "__main__":

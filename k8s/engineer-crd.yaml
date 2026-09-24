@@ -1,0 +1,32 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: engineers.torkzaban.dev
+spec:
+  group: torkzaban.dev
+  scope: Cluster
+  names:
+    kind: Engineer
+    plural: engineers
+    singular: engineer
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          required: [spec]
+          properties:
+            spec:
+              type: object
+              required: [role, location]
+              properties:
+                role: {type: string}
+                location: {type: string}
+                focus: {type: string}
+      additionalPrinterColumns:
+        - {name: Role, type: string, jsonPath: .spec.role}
+        - {name: Location, type: string, jsonPath: .spec.location}
+        # priority 1: only printed with -o wide, like the built-in wide columns.
+        - {name: Focus, type: string, jsonPath: .spec.focus, priority: 1}
