@@ -46,6 +46,8 @@ and I help run [Jomhoor](https://jomhoor.org), a platform for anonymous, verifia
 | [Jomhoor platform](https://github.com/jomhoor/Platform) | Relayers for registration and vote submission behind an nginx gateway, anchored to Rarimo L2. | Solidity, Docker |
 | [Digital Freedom Congress](https://github.com/Iran-Digital-Freedom-Congress/the-digital-congress) · [live](https://difcongress.com) | Static site in six languages, built from a single CSV of strings, including right-to-left scripts. | HTML, Python |
 | [Atlas of Iranian civil society](https://github.com/Atlasiran/Atlas-website) · [live](https://atlasiran.org) | Bilingual, RTL-first SvelteKit directory of civil-society organisations. | SvelteKit, Supabase, Cloudflare |
+| [Iranian constitutions corpus](https://github.com/Atlasiran/constitutions) · [live](https://atlasiran.org/constitutions#corpus) | 34 constitutions and political programmes, split into articles and compared side by side. The 1979 constitution is assessed like any other, never as the reference. | Python, Tesseract |
+| [normalcy](https://github.com/jomhoor/normalcy) · [live](https://normalcy.is) | Human-rights benchmark for Atlas and Jomhoor: twelve international instruments split into citable provisions. Claude audits documents against them; every citation is verified and a human reviews before publishing. | TypeScript, Cloudflare Workers |
 
 #### Organisations
 
