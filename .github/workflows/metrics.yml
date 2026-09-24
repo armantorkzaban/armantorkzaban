@@ -1,0 +1,47 @@
+name: Metrics
+on:
+  schedule: [{cron: "0 0 * * *"}]
+  workflow_dispatch:
+  push: {branches: [main], paths: [.github/workflows/metrics.yml]}
+
+concurrency: {group: readme-writers}
+
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # Pinned rather than @latest: this step runs with a PAT that can read every repo I can.
+      # A SHA, not the tag, because a tag can be moved to different code.
+      - uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # v3.34
+        with:
+          token: ${{ secrets.METRICS_TOKEN }}
+          committer_token: ${{ secrets.GITHUB_TOKEN }}
+          config_timezone: Europe/Berlin
+          config_padding: 5%
+
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
+
+          plugin_habits: yes
+          plugin_habits_from: 200
+          plugin_habits_days: 50
+
+          plugin_lines: yes
+
+          plugin_languages: yes
+          plugin_languages_limit: 8
+
+          # Most of my work lives in organisation repos, which a user profile doesn't show by default.
+          plugin_repositories: yes
+          plugin_repositories_featured: >-
+            jomhoor/STV-voting-simulator,
+            jomhoor/Jomhoor-wallet,
+            Iran-Digital-Freedom-Congress/the-digital-congress,
+            Atlasiran/Atlas-website
+
+          plugin_people: yes
+          plugin_people_types: followers
+          plugin_people_limit: 28
+          plugin_people_size: 28

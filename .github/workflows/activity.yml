@@ -1,0 +1,29 @@
+name: Activity
+on:
+  schedule: [{cron: "30 0 * * *"}]
+  workflow_dispatch:
+  push: {branches: [main], paths: [scripts/**, tests/**, .github/workflows/activity.yml]}
+
+concurrency: {group: readme-writers}
+
+jobs:
+  activity:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m unittest discover -s tests -v
+      - run: python scripts/activity.py README.md
+        env:
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+      - name: Commit if changed
+        run: |
+          git diff --quiet README.md && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Update activity"
+          git pull --rebase
+          git push
