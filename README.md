@@ -7,24 +7,24 @@ actively trying to switch it off.
 <!-- cluster:start -->
 ```console
 $ kubectl get engineer arman -o wide
-NAME    ROLE                LOCATION    FOCUS
-arman   platform-engineer   göttingen   k8s scheduling · gitops · observability · civic-tech infra
+NAME    ROLE                LOCATION     FOCUS
+arman   platform-engineer   göttingen    k8s scheduling · gitops · observability · civic-tech infra
 
 $ kubectl get nodes
 NAME                    STATUS   ROLES           AGE   VERSION
-profile-control-plane   Ready    control-plane   31s   v1.33.1
-profile-worker          Ready    <none>          17s   v1.33.1
-profile-worker2         Ready    <none>          17s   v1.33.1
-profile-worker3         Ready    <none>          17s   v1.33.1
+profile-control-plane   Ready    control-plane   33s   v1.37.0
+profile-worker          Ready    <none>          19s   v1.37.0
+profile-worker2         Ready    <none>          18s   v1.37.0
+profile-worker3         Ready    <none>          19s   v1.37.0
 
 $ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName
 POD                       STATUS    NODE
-spread-7776697d4d-29x6f   Running   profile-worker2
-spread-7776697d4d-2t8d5   Running   profile-worker
-spread-7776697d4d-7lpkp   Running   profile-worker3
-spread-7776697d4d-rvtjd   Running   profile-worker
+spread-77fb9db889-42chw   Running   profile-worker3
+spread-77fb9db889-74cnq   Running   profile-worker
+spread-77fb9db889-8qd8x   Running   profile-worker
+spread-77fb9db889-kbg9v   Running   profile-worker2
 ```
-<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/workflows/cluster.yml">the Cluster workflow</a>.</sub>
+<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/36013574287">this run</a>.</sub>
 <!-- cluster:end -->
 
 **Research.** At the L3S Research Center I worked on two EU Horizon projects,
