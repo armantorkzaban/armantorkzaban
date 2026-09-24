@@ -61,7 +61,7 @@ Plus 543 contributions to private repositories.
 
 #### By the numbers
 
-<img src="/github-metrics.svg" alt="GitHub metrics: contribution calendar, languages, coding habits">
+<img src="/github-metrics.svg" alt="GitHub metrics: contribution calendar, languages, featured repositories">
 
 ---
 
