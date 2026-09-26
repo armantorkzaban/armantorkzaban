@@ -12,19 +12,19 @@ arman   platform-engineer   göttingen    k8s scheduling · gitops · observabil
 
 $ kubectl get nodes
 NAME                    STATUS   ROLES           AGE   VERSION
-profile-control-plane   Ready    control-plane   29s   v1.37.0
-profile-worker          Ready    <none>          19s   v1.37.0
-profile-worker2         Ready    <none>          19s   v1.37.0
-profile-worker3         Ready    <none>          19s   v1.37.0
+profile-control-plane   Ready    control-plane   28s   v1.37.0
+profile-worker          Ready    <none>          18s   v1.37.0
+profile-worker2         Ready    <none>          18s   v1.37.0
+profile-worker3         Ready    <none>          18s   v1.37.0
 
 $ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName
 POD                       STATUS    NODE
-spread-77fb9db889-9dd9p   Running   profile-worker
-spread-77fb9db889-pgts4   Running   profile-worker3
-spread-77fb9db889-z5ljp   Running   profile-worker2
-spread-77fb9db889-znn5c   Running   profile-worker3
+spread-77fb9db889-bfcr6   Running   profile-worker2
+spread-77fb9db889-jshtd   Running   profile-worker
+spread-77fb9db889-kfjff   Running   profile-worker3
+spread-77fb9db889-xcd29   Running   profile-worker
 ```
-<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/36080087991">this run</a>.</sub>
+<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/36206828529">this run</a>.</sub>
 <!-- cluster:end -->
 
 **Research.** At the L3S Research Center I worked on two EU Horizon projects,
