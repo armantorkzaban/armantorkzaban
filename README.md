@@ -68,14 +68,14 @@ Prometheus, Grafana, OpenTelemetry · Linux internals and hardening · Go, Pytho
 <!-- activity:start -->
 | Repository | Commits (90d) | About |
 |---|--:|---|
+| [Atlasiran/constitutions](https://github.com/Atlasiran/constitutions) | 46 | اطلس اسناد بنیادین: مجموعه‌ای از قانون‌های اساسی، پیش‌نویس‌ها و پیشنهادهای قانون اساسی، و برنامه‌های سیاسی ایرانی. |
 | [armantorkzaban/armantorkzaban.github.io](https://github.com/armantorkzaban/armantorkzaban.github.io) | 44 |  |
-| [Atlasiran/constitutions](https://github.com/Atlasiran/constitutions) | 43 | Iranian constitutions and constitutional proposals: corpus, article-level comparison and human-rights benchmark |
 | [Atlasiran/Atlasiran.org](https://github.com/Atlasiran/Atlasiran.org) | 27 | Iranian Civil Society Organisations |
 | [jomhoor/Jomhoor.org](https://github.com/jomhoor/Jomhoor.org) | 11 | جمهور Rebuplic |
 | [jomhoor/STV-voting-simulator](https://github.com/jomhoor/STV-voting-simulator) | 9 |  |
 | [jomhoor/normalcy](https://github.com/jomhoor/normalcy) | 7 | Jomhoor's Normative Compliancy System |
 
-Plus 620 contributions to private repositories.
+Plus 622 contributions to private repositories.
 <!-- activity:end -->
 
 <sub>Generated daily by <a href="scripts/activity.py">scripts/activity.py</a>. Private work is counted, never named.</sub>
@@ -85,12 +85,12 @@ Plus 620 contributions to private repositories.
 <!-- habits:start -->
 ```text
 hour  00  04  08  12  16  20
-      █▇▇▅▄▂▄▂▂▂▄▃▂▂▃▃▃▃▅▃▄▄▆█   peak 23:00
+      █▇▇▅▄▂▄▂▂▂▄▃▂▂▃▃▃▃▅▃▅▄▆█   peak 23:00
 
 day   M T W T F S S
       ▇ █ ▅ ▇ █ ▅ ▇   peak Fri
 ```
-<sub>571 public commits over the last 365 days, by author time in Europe/Berlin.</sub>
+<sub>574 public commits over the last 365 days, by author time in Europe/Berlin.</sub>
 <!-- habits:end -->
 
 #### By the numbers
