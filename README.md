@@ -72,10 +72,10 @@ Prometheus, Grafana, OpenTelemetry · Linux internals and hardening · Go, Pytho
 | [armantorkzaban/armantorkzaban.github.io](https://github.com/armantorkzaban/armantorkzaban.github.io) | 44 |  |
 | [Atlasiran/Atlasiran.org](https://github.com/Atlasiran/Atlasiran.org) | 27 | Iranian Civil Society Organisations |
 | [wattproof/wattproof](https://github.com/wattproof/wattproof) | 12 | Lowers the wall-plug energy of Kubernetes clusters on your own hardware, and proves it with pre-registered experiments. |
-| [jomhoor/Jomhoor.org](https://github.com/jomhoor/Jomhoor.org) | 10 | جمهور Rebuplic |
 | [jomhoor/STV-voting-simulator](https://github.com/jomhoor/STV-voting-simulator) | 9 |  |
+| [jomhoor/Jomhoor.org](https://github.com/jomhoor/Jomhoor.org) | 7 | جمهور Rebuplic |
 
-Plus 737 contributions to private repositories.
+Plus 754 contributions to private repositories.
 <!-- activity:end -->
 
 <sub>Generated daily by <a href="scripts/activity.py">scripts/activity.py</a>. Private work is counted, never named.</sub>
