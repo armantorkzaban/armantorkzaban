@@ -8,23 +8,32 @@ actively trying to switch it off.
 ```console
 $ kubectl get engineer arman -o wide
 NAME    ROLE                LOCATION     FOCUS
-arman   platform-engineer   göttingen    k8s scheduling · gitops · observability · civic-tech infra
+arman   platform-engineer   göttingen    k8s scheduling · energy · gitops · civic-tech infra
+
+$ kubectl drain profile-worker3 --ignore-daemonsets
+node/profile-worker3 cordoned
+evicting pod arman/spread-77fb9db889-vl5q9
+pod/spread-77fb9db889-vl5q9 evicted
+node/profile-worker3 drained
+
+$ docker stop profile-worker3
+profile-worker3
 
 $ kubectl get nodes
-NAME                    STATUS   ROLES           AGE   VERSION
-profile-control-plane   Ready    control-plane   32s   v1.37.0
-profile-worker          Ready    <none>          17s   v1.37.0
-profile-worker2         Ready    <none>          17s   v1.37.0
-profile-worker3         Ready    <none>          17s   v1.37.0
+NAME                    STATUS                        ROLES           AGE   VERSION
+profile-control-plane   Ready                         control-plane   79s   v1.37.0
+profile-worker          Ready                         <none>          64s   v1.37.0
+profile-worker2         Ready                         <none>          64s   v1.37.0
+profile-worker3         NotReady,SchedulingDisabled   <none>          64s   v1.37.0
 
 $ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName
 POD                       STATUS    NODE
-spread-77fb9db889-5xw76   Running   profile-worker2
-spread-77fb9db889-gqg7w   Running   profile-worker2
-spread-77fb9db889-ksvkr   Running   profile-worker3
-spread-77fb9db889-nfn78   Running   profile-worker
+spread-77fb9db889-98m8z   Running   profile-worker
+spread-77fb9db889-d6x85   Running   profile-worker2
+spread-77fb9db889-l6c8k   Running   profile-worker
+spread-77fb9db889-lxqjt   Running   profile-worker2
 ```
-<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/38330890374">this run</a>.</sub>
+<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/workflows/cluster.yml">this run</a>. The run fails unless every replica is Ready and evenly spread over the workers still on. Wattproof does the same to real servers, and meters the watts.</sub>
 <!-- cluster:end -->
 
 **Research.** At the L3S Research Center I worked on two EU Horizon projects,

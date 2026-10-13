@@ -32,3 +32,16 @@ spec:
           image: registry.k8s.io/pause:3.10
           resources:
             requests: {cpu: 10m, memory: 8Mi}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: spread
+  namespace: arman
+spec:
+  # kubectl drain evicts through the eviction API, which refuses any eviction that
+  # would leave fewer than three replicas ready. With two of the four on the node
+  # being drained, the second waits until the first one's replacement is up.
+  minAvailable: 3
+  selector:
+    matchLabels: {app: spread}

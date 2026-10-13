@@ -9,6 +9,8 @@ concurrency: {group: readme-writers}
 jobs:
   cluster:
     runs-on: ubuntu-24.04
+    # A drain blocked by the PodDisruptionBudget would otherwise wait forever.
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
@@ -17,7 +19,7 @@ jobs:
       - run: scripts/cluster.sh > block.md
       - name: Link the run that produced it
         run: |
-          echo "<sub>Real output from a kind cluster, rebuilt daily by <a href=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\">this run</a>.</sub>" >> block.md
+          echo "<sub>Real output from a kind cluster, rebuilt daily by <a href=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\">this run</a>. The run fails unless every replica is Ready and evenly spread over the workers still on. Wattproof does the same to real servers, and meters the watts.</sub>" >> block.md
       - run: python3 scripts/splice.py cluster README.md < block.md
       - name: Commit if changed
         run: |

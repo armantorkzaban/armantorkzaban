@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
-# Stand up the profile cluster, check the pod spread, and print the README block on stdout.
+# Stand up the profile cluster, drain a worker and power it off the way Wattproof
+# would, check the service survived it, and print the README block on stdout.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+
+off=profile-worker3
 
 trap 'kind delete cluster --name profile >&2' EXIT
 kind create cluster --config k8s/kind.yaml --wait 120s >&2
@@ -17,17 +20,23 @@ kubectl apply -f k8s/engineer.yaml -f k8s/spread.yaml >&2
 kubectl -n arman rollout status deploy/spread --timeout=120s >&2
 
 # A rollout can succeed with pods piled onto one node (ScheduleAnyway, or a
-# larger maxSkew), so check the placement itself: every worker used, and no
-# worker more than one pod ahead of another.
-counts=$(kubectl -n arman get pods -l app=spread -o jsonpath='{range .items[*]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c | awk '{print $1}' | sort -n)
-workers=$(kubectl get nodes -l '!node-role.kubernetes.io/control-plane' --no-headers | wc -l | tr -d ' ')
-used=$(echo "$counts" | wc -l | tr -d ' ')
-skew=$(( $(echo "$counts" | tail -1) - $(echo "$counts" | head -1) ))
-if [ "$used" -ne "$workers" ] || [ "$skew" -gt 1 ]; then
-  echo "spread: pods on $used of $workers workers, skew $skew" >&2
-  kubectl -n arman get pods -o wide >&2
-  exit 1
-fi
+# larger maxSkew), so check the placement itself: pods on exactly the given
+# nodes, none more than one pod ahead of another, and none left Pending.
+check_spread() {
+  local placed want counts skew
+  placed=$(kubectl -n arman get pods -l app=spread -o jsonpath='{range .items[*]}{.spec.nodeName}{"\n"}{end}' | sort)
+  want=$(printf '%s\n' "$@" | sort)
+  counts=$(uniq -c <<<"$placed" | awk '{print $1}' | sort -n)
+  skew=$(( $(tail -1 <<<"$counts") - $(head -1 <<<"$counts") ))
+  if [ "$(uniq <<<"$placed")" != "$want" ] || [ "$skew" -gt 1 ]; then
+    echo "spread: want pods on $*, skew at most 1" >&2
+    kubectl -n arman get pods -o wide >&2
+    exit 1
+  fi
+}
+
+workers=$(kubectl get nodes -l '!node-role.kubernetes.io/control-plane' -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}')
+check_spread $workers
 
 run() {
   echo "\$ $*"
@@ -36,6 +45,20 @@ run() {
 
 echo '```console'
 run kubectl get engineer arman -o wide
+echo
+# Warnings and the eviction log go to stderr, so to the run's log, not the README.
+run kubectl drain "$off" --ignore-daemonsets
+echo
+# A kind node is a container, so stopping it is the power-off.
+run docker stop "$off"
+# The node turns NotReady once the kubelet misses its heartbeat grace period.
+kubectl wait --for=condition=Ready=Unknown "node/$off" --timeout=120s >&2
+
+# The service has to survive the power-off: every replica Ready, spread evenly
+# over the workers still on.
+kubectl -n arman rollout status deploy/spread --timeout=60s >&2
+check_spread $(grep -vx "$off" <<<"$workers")
+
 echo
 run kubectl get nodes
 echo
