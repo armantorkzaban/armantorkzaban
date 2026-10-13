@@ -13,8 +13,8 @@ arman   platform-engineer   göttingen    k8s scheduling · energy · gitops · 
 
 $ kubectl drain profile-worker3 --ignore-daemonsets
 node/profile-worker3 cordoned
-evicting pod arman/spread-77fb9db889-xhxkw
-pod/spread-77fb9db889-xhxkw evicted
+evicting pod arman/spread-77fb9db889-k82b9
+pod/spread-77fb9db889-k82b9 evicted
 node/profile-worker3 drained
 
 $ docker stop profile-worker3
@@ -22,19 +22,19 @@ profile-worker3
 
 $ kubectl get nodes
 NAME                    STATUS                        ROLES           AGE   VERSION
-profile-control-plane   Ready                         control-plane   79s   v1.37.0
-profile-worker          Ready                         <none>          64s   v1.37.0
-profile-worker2         Ready                         <none>          64s   v1.37.0
-profile-worker3         NotReady,SchedulingDisabled   <none>          64s   v1.37.0
+profile-control-plane   Ready                         control-plane   83s   v1.37.0
+profile-worker          Ready                         <none>          73s   v1.37.0
+profile-worker2         Ready                         <none>          73s   v1.37.0
+profile-worker3         NotReady,SchedulingDisabled   <none>          72s   v1.37.0
 
 $ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,NODE:.spec.nodeName
 POD                       NODE
-spread-77fb9db889-bv629   profile-worker2
-spread-77fb9db889-hftww   profile-worker
-spread-77fb9db889-np6d6   profile-worker2
-spread-77fb9db889-qk4fn   profile-worker
+spread-77fb9db889-5vx7l   profile-worker
+spread-77fb9db889-6bq8t   profile-worker2
+spread-77fb9db889-7dqzd   profile-worker
+spread-77fb9db889-kcbwp   profile-worker2
 ```
-<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/workflows/cluster.yml">this run</a>. The run fails unless every replica is Ready and evenly spread over the workers still on. Wattproof does the same to real servers, and meters the watts.</sub>
+<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/38347674264">this run</a>. The run fails unless every replica is Ready and evenly spread over the workers still on. Wattproof does the same to real servers, and meters the watts.</sub>
 <!-- cluster:end -->
 
 #### Building
