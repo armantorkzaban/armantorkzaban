@@ -1,8 +1,9 @@
 ### Arman Torkzaban
 
 Platform engineer in Göttingen. Kubernetes, the Linux underneath it, and the pipelines that keep
-both honest. I build infrastructure for civic tech that has to keep working when someone is
-actively trying to switch it off.
+both honest. Now building [Wattproof](https://wattproof.de), which lowers the power a cluster draws
+at the wall and proves the saving. Alongside it, infrastructure for civic tech that has to keep
+working when someone is actively trying to switch it off.
 
 <!-- cluster:start -->
 ```console
@@ -12,8 +13,8 @@ arman   platform-engineer   göttingen    k8s scheduling · energy · gitops · 
 
 $ kubectl drain profile-worker3 --ignore-daemonsets
 node/profile-worker3 cordoned
-evicting pod arman/spread-77fb9db889-vl5q9
-pod/spread-77fb9db889-vl5q9 evicted
+evicting pod arman/spread-77fb9db889-xhxkw
+pod/spread-77fb9db889-xhxkw evicted
 node/profile-worker3 drained
 
 $ docker stop profile-worker3
@@ -26,52 +27,73 @@ profile-worker          Ready                         <none>          64s   v1.3
 profile-worker2         Ready                         <none>          64s   v1.37.0
 profile-worker3         NotReady,SchedulingDisabled   <none>          64s   v1.37.0
 
-$ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName
-POD                       STATUS    NODE
-spread-77fb9db889-98m8z   Running   profile-worker
-spread-77fb9db889-d6x85   Running   profile-worker2
-spread-77fb9db889-l6c8k   Running   profile-worker
-spread-77fb9db889-lxqjt   Running   profile-worker2
+$ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,NODE:.spec.nodeName
+POD                       NODE
+spread-77fb9db889-bv629   profile-worker2
+spread-77fb9db889-hftww   profile-worker
+spread-77fb9db889-np6d6   profile-worker2
+spread-77fb9db889-qk4fn   profile-worker
 ```
 <sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/workflows/cluster.yml">this run</a>. The run fails unless every replica is Ready and evenly spread over the workers still on. Wattproof does the same to real servers, and meters the watts.</sub>
 <!-- cluster:end -->
 
-**Research.** At the L3S Research Center I worked on two EU Horizon projects,
-[GLACIATION](https://github.com/glaciation-heu) and [CLEVER](https://www.cleverproject.eu/). I wrote custom Kubernetes scheduler
-plugins in Go, driven by a reinforcement-learning decision engine, and built the telemetry
-pipelines on EKS, Prometheus and Grafana that fed the engine. Public work from that time:
-[IceStream](https://github.com/glaciation-heu/IceStream) and the project's
+#### Building
+
+**[Wattproof](https://github.com/wattproof/wattproof)** · [wattproof.de](https://wattproof.de) · Go, Python\
+Keeps a cluster's most efficient servers on, drains and powers off the rest, and powers them on
+again before demand returns. Stock Kubernetes only: taints, the eviction API, PodDisruptionBudgets.
+Power is metered at the wall, and a claimed saving has to pass a randomised, pre-registered
+experiment against two baselines: stock Kubernetes, and a tuned open-source setup. Design and
+simulation so far. The [lab notebook](https://github.com/wattproof/wattproof/tree/main/docs/notebook)
+publishes the negative results too.
+
+**[Beh.dev](https://beh.dev)** · a personal AI company, built like a city\
+Agents are declarative specs: purpose, tools, data clearance, budget, and who reviews their work.
+The city runs on k3s and NATS JetStream with default-deny egress, so exfiltration is a routing
+impossibility rather than a promise. Most of it is designed, not yet built, and
+[the architecture page](https://beh.dev/city/) says which. It ships [Selfwise](https://selfwise.space),
+which maps how you think, and [Juju](https://juju.beh.dev), picture-stories that teach a child
+their family's language.
+
+#### Research
+
+At the [L3S Research Center](https://www.l3s.de) I worked on two EU Horizon projects,
+[GLACIATION](https://github.com/glaciation-heu) and [CLEVER](https://www.cleverproject.eu/). I wrote
+custom Kubernetes scheduler plugins in Go, driven by a reinforcement-learning decision engine, and
+built the telemetry pipelines on EKS, Prometheus and Grafana that fed it. Wattproof starts from
+what that taught me: measure the machines you optimise, and test against a strong baseline. Public
+work: [IceStream](https://github.com/glaciation-heu/IceStream) and the
 [GitOps deployments](https://github.com/glaciation-heu/gitops-deployments).
 
-**Now.** I'm building [Selfwise](https://selfwise.space), a privacy-first AI platform on the edge,
-and I help run [Jomhoor](https://jomhoor.org), a platform for anonymous, verifiable voting.
+#### Civic tech
 
-#### Things I built
+- **[Jomhoor](https://jomhoor.org)**, anonymous and verifiable voting. A [wallet](https://github.com/jomhoor/Jomhoor-wallet)
+  that proves eligibility from a passport's chip with zero-knowledge proofs, the data never leaving
+  the phone; [relayers](https://github.com/jomhoor/Platform) anchored to Rarimo L2; and an
+  [STV simulator](https://github.com/jomhoor/STV-voting-simulator) anyone can use to re-count a
+  published result.
+- **[Atlas Iran](https://atlasiran.org)**. A bilingual, right-to-left
+  [directory of civil society](https://github.com/Atlasiran/Atlas-website),
+  [34 constitutions](https://github.com/Atlasiran/constitutions) split into articles and compared
+  side by side, and [normalcy](https://github.com/jomhoor/normalcy), a human-rights benchmark of
+  citable provisions.
+- **[Digital Freedom Congress](https://difcongress.com)**. A
+  [site in six languages](https://github.com/Iran-Digital-Freedom-Congress/the-digital-congress),
+  built from one CSV of strings.
 
-| Project | What it is | Stack |
-|---|---|---|
-| [STV voting simulator](https://github.com/jomhoor/STV-voting-simulator) · [live](https://jomhoor.github.io/STV-voting-simulator/) | Single Transferable Vote with reserved seats and a tie-break fixed before counting. Regression-tested against the reference paper, and runs from the CLI so anyone can check a published result. | TypeScript |
-| [Jomhoor wallet](https://github.com/jomhoor/Jomhoor-wallet) | Mobile wallet that reads passports and national ID cards over NFC and proves eligibility with zero-knowledge proofs. The document data never leaves the phone. | TypeScript, Noir, Circom |
-| [Jomhoor platform](https://github.com/jomhoor/Platform) | Relayers for registration and vote submission behind an nginx gateway, anchored to Rarimo L2. | Solidity, Docker |
-| [Digital Freedom Congress](https://github.com/Iran-Digital-Freedom-Congress/the-digital-congress) · [live](https://difcongress.com) | Static site in six languages, built from a single CSV of strings, including right-to-left scripts. | HTML, Python |
-| [Atlas of Iranian civil society](https://github.com/Atlasiran/Atlas-website) · [live](https://atlasiran.org) | Bilingual, RTL-first SvelteKit directory of civil-society organisations. | SvelteKit, Supabase, Cloudflare |
-| [Iranian constitutions corpus](https://github.com/Atlasiran/constitutions) · [live](https://atlasiran.org/constitutions#corpus) | 34 constitutions and political programmes, split into articles and compared side by side. The 1979 constitution is assessed like any other, never as the reference. | Python, Tesseract |
-| [normalcy](https://github.com/jomhoor/normalcy) · [live](https://normalcy.is) | Human-rights benchmark for Atlas and Jomhoor: twelve international instruments split into citable provisions. Claude audits documents against them; every citation is verified and a human reviews before publishing. | TypeScript, Cloudflare Workers |
+#### Stack
 
-#### Organisations
+```text
+delivery       GitHub Actions · Argo CD · Helm
+orchestration  Kubernetes · scheduler plugins in Go
+provisioning   Terraform / OpenTofu · AWS (EKS, EC2, IAM, VPC)
+os             Linux internals · cgroups · hardening · Talos
+metal          Redfish · BMCs · metered PDUs
 
-<a href="https://github.com/jomhoor"><img src="https://github.com/jomhoor.png?size=80" width="40" alt="Jomhoor" title="Jomhoor"></a>
-<a href="https://github.com/Iranians-Vote-Digital-Democracy"><img src="https://github.com/Iranians-Vote-Digital-Democracy.png?size=80" width="40" alt="Iranians.Vote" title="Iranians.Vote"></a>
-<a href="https://github.com/tcfev"><img src="https://github.com/tcfev.png?size=80" width="40" alt="Transnational Community Federation" title="Transnational Community Federation e.V."></a>
-<a href="https://github.com/Atlasiran"><img src="https://github.com/Atlasiran.png?size=80" width="40" alt="Atlas Iran" title="Atlas Iran"></a>
-<a href="https://github.com/Iran-Digital-Freedom-Congress"><img src="https://github.com/Iran-Digital-Freedom-Congress.png?size=80" width="40" alt="Iran Digital Freedom Congress" title="Iran Digital Freedom Congress"></a>
-<a href="https://github.com/glaciation-heu"><img src="https://github.com/glaciation-heu.png?size=80" width="40" alt="GLACIATION" title="GLACIATION (EU Horizon)"></a>
-
-#### Toolbox
-
-Kubernetes (scheduler plugins, Helm, ArgoCD) · AWS (EKS, EC2, IAM, VPC) · Terraform / OpenTofu ·
-Prometheus, Grafana, OpenTelemetry · Linux internals and hardening · Go, Python, TypeScript, Bash
+observability  Prometheus · Grafana · OpenTelemetry
+languages      Go · Python · TypeScript · Bash
+```
 
 ---
 
-[armantorkzaban.com](https://armantorkzaban.com) · [jomhoor.org](https://jomhoor.org) · [selfwise.space](https://selfwise.space)
+[armantorkzaban.com](https://armantorkzaban.com) · [wattproof.de](https://wattproof.de) · [beh.dev](https://beh.dev) · [jomhoor.org](https://jomhoor.org)

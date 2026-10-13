@@ -62,5 +62,5 @@ check_spread $(grep -vx "$off" <<<"$workers")
 echo
 run kubectl get nodes
 echo
-run kubectl -n arman get pods -o custom-columns=POD:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName
+run kubectl -n arman get pods -o custom-columns=POD:.metadata.name,NODE:.spec.nodeName
 echo '```'
