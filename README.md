@@ -72,40 +72,6 @@ and I help run [Jomhoor](https://jomhoor.org), a platform for anonymous, verifia
 Kubernetes (scheduler plugins, Helm, ArgoCD) · AWS (EKS, EC2, IAM, VPC) · Terraform / OpenTofu ·
 Prometheus, Grafana, OpenTelemetry · Linux internals and hardening · Go, Python, TypeScript, Bash
 
-#### Active lately
-
-<!-- activity:start -->
-| Repository | Commits (90d) | About |
-|---|--:|---|
-| [Atlasiran/constitutions](https://github.com/Atlasiran/constitutions) | 46 | اطلس اسناد بنیادین: مجموعه‌ای از قانون‌های اساسی، پیش‌نویس‌ها و پیشنهادهای قانون اساسی، و برنامه‌های سیاسی ایرانی. |
-| [armantorkzaban/armantorkzaban.github.io](https://github.com/armantorkzaban/armantorkzaban.github.io) | 44 |  |
-| [Atlasiran/Atlasiran.org](https://github.com/Atlasiran/Atlasiran.org) | 27 | Iranian Civil Society Organisations |
-| [wattproof/wattproof](https://github.com/wattproof/wattproof) | 12 | Lowers the wall-plug energy of Kubernetes clusters on your own hardware, and proves it with pre-registered experiments. |
-| [jomhoor/STV-voting-simulator](https://github.com/jomhoor/STV-voting-simulator) | 9 |  |
-| [jomhoor/Jomhoor.org](https://github.com/jomhoor/Jomhoor.org) | 7 | جمهور Rebuplic |
-
-Plus 772 contributions to private repositories.
-<!-- activity:end -->
-
-<sub>Generated daily by <a href="scripts/activity.py">scripts/activity.py</a>. Private work is counted, never named.</sub>
-
-#### When I commit
-
-<!-- habits:start -->
-```text
-hour  00  04  08  12  16  20
-      █▇▇▅▄▂▄▂▂▂▄▃▂▃▃▃▃▃▅▃▅▄▆█   peak 23:00
-
-day   M T W T F S S
-      ▇ █ ▅ ▇ █ ▅ ▇   peak Fri
-```
-<sub>581 public commits over the last 365 days, by author time in Europe/Berlin.</sub>
-<!-- habits:end -->
-
-#### By the numbers
-
-<img src="/github-metrics.svg" alt="GitHub metrics: contribution calendar, languages, featured repositories">
-
 ---
 
 [armantorkzaban.com](https://armantorkzaban.com) · [jomhoor.org](https://jomhoor.org) · [selfwise.space](https://selfwise.space)

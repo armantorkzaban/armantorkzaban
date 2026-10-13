@@ -2,7 +2,7 @@ name: Cluster
 on:
   schedule: [{cron: "15 0 * * *"}]
   workflow_dispatch:
-  push: {branches: [main], paths: [k8s/**, scripts/cluster.sh, scripts/splice.py, .github/workflows/cluster.yml]}
+  push: {branches: [main], paths: [k8s/**, scripts/**, tests/**, .github/workflows/cluster.yml]}
 
 concurrency: {group: readme-writers}
 
@@ -20,6 +20,7 @@ jobs:
       - name: Link the run that produced it
         run: |
           echo "<sub>Real output from a kind cluster, rebuilt daily by <a href=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\">this run</a>. The run fails unless every replica is Ready and evenly spread over the workers still on. Wattproof does the same to real servers, and meters the watts.</sub>" >> block.md
+      - run: python3 -m unittest discover -s tests -v
       - run: python3 scripts/splice.py cluster README.md < block.md
       - name: Commit if changed
         run: |
