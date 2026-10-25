@@ -13,8 +13,11 @@ arman   platform-engineer   göttingen    k8s scheduling · energy · gitops · 
 
 $ kubectl drain profile-worker3 --ignore-daemonsets
 node/profile-worker3 cordoned
-evicting pod arman/spread-77fb9db889-xhxbj
-pod/spread-77fb9db889-xhxbj evicted
+evicting pod arman/spread-77fb9db889-kgk4m
+evicting pod arman/spread-77fb9db889-fvrrt
+pod/spread-77fb9db889-fvrrt evicted
+evicting pod arman/spread-77fb9db889-kgk4m
+pod/spread-77fb9db889-kgk4m evicted
 node/profile-worker3 drained
 
 $ docker stop profile-worker3
@@ -25,16 +28,16 @@ NAME                    STATUS                        ROLES           AGE   VERS
 profile-control-plane   Ready                         control-plane   88s   v1.37.0
 profile-worker          Ready                         <none>          74s   v1.37.0
 profile-worker2         Ready                         <none>          74s   v1.37.0
-profile-worker3         NotReady,SchedulingDisabled   <none>          73s   v1.37.0
+profile-worker3         NotReady,SchedulingDisabled   <none>          74s   v1.37.0
 
 $ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,NODE:.spec.nodeName
 POD                       NODE
-spread-77fb9db889-4wg5j   profile-worker
-spread-77fb9db889-92b4v   profile-worker2
-spread-77fb9db889-hc88m   profile-worker2
-spread-77fb9db889-vf9sf   profile-worker
+spread-77fb9db889-6bbx5   profile-worker2
+spread-77fb9db889-7xtx6   profile-worker
+spread-77fb9db889-l85sq   profile-worker
+spread-77fb9db889-l8kvz   profile-worker2
 ```
-<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/40047402158">this run</a>. One worker is drained and switched off, and the run fails if the pods don't spread evenly over the rest. Wattproof will do this to real servers.</sub>
+<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/40149034644">this run</a>. One worker is drained and switched off, and the run fails if the pods don't spread evenly over the rest. Wattproof will do this to real servers.</sub>
 <!-- cluster:end -->
 
 #### Building
