@@ -13,8 +13,8 @@ arman   platform-engineer   göttingen    k8s scheduling · energy · gitops · 
 
 $ kubectl drain profile-worker3 --ignore-daemonsets
 node/profile-worker3 cordoned
-evicting pod arman/spread-77fb9db889-8m454
-pod/spread-77fb9db889-8m454 evicted
+evicting pod arman/spread-77fb9db889-k4ph9
+pod/spread-77fb9db889-k4ph9 evicted
 node/profile-worker3 drained
 
 $ docker stop profile-worker3
@@ -22,19 +22,19 @@ profile-worker3
 
 $ kubectl get nodes
 NAME                    STATUS                        ROLES           AGE   VERSION
-profile-control-plane   Ready                         control-plane   89s   v1.37.0
-profile-worker          Ready                         <none>          75s   v1.37.0
-profile-worker2         Ready                         <none>          75s   v1.37.0
-profile-worker3         NotReady,SchedulingDisabled   <none>          75s   v1.37.0
+profile-control-plane   Ready                         control-plane   80s   v1.37.0
+profile-worker          Ready                         <none>          64s   v1.37.0
+profile-worker2         Ready                         <none>          65s   v1.37.0
+profile-worker3         NotReady,SchedulingDisabled   <none>          64s   v1.37.0
 
 $ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,NODE:.spec.nodeName
 POD                       NODE
-spread-77fb9db889-8gpr9   profile-worker2
-spread-77fb9db889-mmcgs   profile-worker
-spread-77fb9db889-ptnkz   profile-worker
-spread-77fb9db889-pwq8l   profile-worker2
+spread-77fb9db889-585pz   profile-worker2
+spread-77fb9db889-cnk8j   profile-worker2
+spread-77fb9db889-n2bnr   profile-worker
+spread-77fb9db889-tpgbs   profile-worker
 ```
-<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/42932998828">this run</a>. One worker is drained and switched off, and the run fails if the pods don't spread evenly over the rest. Wattproof will do this to real servers.</sub>
+<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/43128923307">this run</a>. One worker is drained and switched off, and the run fails if the pods don't spread evenly over the rest. Wattproof will do this to real servers.</sub>
 <!-- cluster:end -->
 
 #### Building
