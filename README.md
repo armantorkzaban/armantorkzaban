@@ -13,8 +13,11 @@ arman   platform-engineer   göttingen    k8s scheduling · energy · gitops · 
 
 $ kubectl drain profile-worker3 --ignore-daemonsets
 node/profile-worker3 cordoned
-evicting pod arman/spread-77fb9db889-7lg7t
-pod/spread-77fb9db889-7lg7t evicted
+evicting pod arman/spread-77fb9db889-xns8s
+evicting pod arman/spread-77fb9db889-jfrm7
+pod/spread-77fb9db889-jfrm7 evicted
+evicting pod arman/spread-77fb9db889-xns8s
+pod/spread-77fb9db889-xns8s evicted
 node/profile-worker3 drained
 
 $ docker stop profile-worker3
@@ -29,12 +32,12 @@ profile-worker3         NotReady,SchedulingDisabled   <none>          73s   v1.3
 
 $ kubectl -n arman get pods -o custom-columns=POD:.metadata.name,NODE:.spec.nodeName
 POD                       NODE
-spread-77fb9db889-cncbp   profile-worker
-spread-77fb9db889-jdzh2   profile-worker
-spread-77fb9db889-pgrsl   profile-worker2
-spread-77fb9db889-srj4m   profile-worker2
+spread-77fb9db889-6ptt5   profile-worker
+spread-77fb9db889-9t8ww   profile-worker
+spread-77fb9db889-rbjrj   profile-worker2
+spread-77fb9db889-rflb4   profile-worker2
 ```
-<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/43338846311">this run</a>. One worker is drained and switched off, and the run fails if the pods don't spread evenly over the rest. Wattproof will do this to real servers.</sub>
+<sub>Real output from a kind cluster, rebuilt daily by <a href="https://github.com/armantorkzaban/armantorkzaban/actions/runs/43535427985">this run</a>. One worker is drained and switched off, and the run fails if the pods don't spread evenly over the rest. Wattproof will do this to real servers.</sub>
 <!-- cluster:end -->
 
 #### Building
